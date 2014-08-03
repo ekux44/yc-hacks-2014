@@ -67,6 +67,9 @@ public class WearService extends WearableListenerService {
     Log.v("wear", messageEvent.getPath());
     Integer brightness = Integer.parseInt(messageEvent.getPath());
 
+    if(brightness == null)
+      brightness = 0;
+
     LegacyGMB gmb = new LegacyGMB();
     gmb.group = "Office";
     gmb.mood = "On";

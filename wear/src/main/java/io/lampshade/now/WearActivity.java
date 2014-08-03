@@ -64,6 +64,10 @@ public class WearActivity extends Activity implements SensorEventListener{
       mGoogleApiClient.connect();
 
 
+      this.brightness =""+ 0;
+
+      sendSpeech();
+
       final WatchViewStub stub = (WatchViewStub) findViewById(R.id.watch_view_stub);
         stub.setOnLayoutInflatedListener(new WatchViewStub.OnLayoutInflatedListener() {
             @Override
@@ -106,7 +110,8 @@ public class WearActivity extends Activity implements SensorEventListener{
             }
             */
 
-            this.brightness =""+( 50 + 50/10* y);
+            int bri = Math.max(0, Math.min(255, (int)(( 127 + 127/10* y))));
+            this.brightness =""+ bri;
 
             mTextView.setText(this.brightness);
             sendSpeech();
@@ -137,13 +142,8 @@ public class WearActivity extends Activity implements SensorEventListener{
 
       @Override
       protected List<Node> doInBackground(Void... params) {
-        return getNodes();
-      }
 
-      @Override
-      protected void onPostExecute(List<Node> nodeList) {
-
-        List<Node> nodes = nodeList;
+        List<Node> nodes = getNodes();
         for (Node node : nodes) {
           PendingResult<MessageApi.SendMessageResult> result = Wearable.MessageApi.sendMessage(
               mGoogleApiClient,
@@ -159,6 +159,15 @@ public class WearActivity extends Activity implements SensorEventListener{
             }
           });
         }
+        return null;
+      }
+
+      @Override
+      protected void onPostExecute(List<Node> nodeList) {
+
+        Log.v("fuuck", "onPostExecute");
+
+
       }
     }.execute();
 
