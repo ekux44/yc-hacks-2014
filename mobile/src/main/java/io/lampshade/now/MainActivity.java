@@ -59,7 +59,7 @@ public class MainActivity extends Activity {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_main);
 
-    this.showNotification(this, "Home", "Party");
+    //this.showNotification(this, "Home", "Party");
   }
 
 
