@@ -95,7 +95,7 @@ public class WearActivity extends Activity implements SensorEventListener{
             // Read Y value to figure out device rotation.
             // The larger the y value, the farther the watch is rotated to the right and vice versa.
 
-          if(SystemClock.elapsedRealtime() > (lastBriChangedTime + 500l)){
+          if(SystemClock.elapsedRealtime() > (lastBriChangedTime + 200l)){
             /*
             double palmGravity = Math.sqrt(Math.pow(x,2) + Math.pow(z, 2));
 
@@ -110,11 +110,15 @@ public class WearActivity extends Activity implements SensorEventListener{
             }
             */
 
-            int bri = Math.max(0, Math.min(255, (int)(( 127 + 127/10* y))));
-            this.brightness =""+ bri;
 
-            mTextView.setText(this.brightness);
-            sendSpeech();
+            if(Math.abs(x)<3) {
+              int bri = Math.max(0, Math.min(255, (int) ((127 + 127 / 10 * y))));
+              this.brightness = "" + bri;
+
+              mTextView.setText(this.brightness);
+              sendSpeech();
+
+            }
 
             lastBriChangedTime = SystemClock.elapsedRealtime();
           }
