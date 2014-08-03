@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.Notification;
 import android.app.PendingIntent;
 import android.content.Intent;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.NotificationManagerCompat;
@@ -24,17 +25,21 @@ public class MainActivity extends Activity {
           PendingIntent.getActivity(this, 0, actionIntent,
                                     PendingIntent.FLAG_UPDATE_CURRENT);
 
-      NotificationCompat.Action a = new NotificationCompat.Action(R.drawable.ic_launcher, "action", actionPendingIntent);
+      NotificationCompat.Action a = new NotificationCompat.Action(R.drawable.ic_action_play, "action", actionPendingIntent);
 
+      /*NotificationCompat.BigPictureStyle bigStyle = new NotificationCompat.BigPictureStyle();
+      bigStyle.bigPicture(BitmapFactory.decodeResource(this.getResources(),
+                                                         R.drawable.ic_launcher_lampshade));
+      */
       Notification notif = new NotificationCompat.Builder(this)
           .setContentTitle("New title")
           .setContentText("subject")
-          .setSmallIcon(R.drawable.ic_launcher)
-
+          .setSmallIcon(R.drawable.ic_launcher_lampshade)
+      //    .setStyle(bigStyle)
           .extend(new NotificationCompat.WearableExtender()
                       .addAction(a)
                       .setContentAction(0)
-                      .setContentIcon(R.drawable.ic_launcher))
+                      .setContentIcon(R.drawable.ic_action_lampshade))
           .build();
       NotificationManagerCompat.from(this).notify(0, notif);
     }
