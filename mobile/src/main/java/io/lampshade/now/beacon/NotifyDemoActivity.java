@@ -19,6 +19,7 @@ import com.estimote.sdk.Region;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
+import io.lampshade.now.MainActivity;
 import io.lampshade.now.R;
 
 import static com.estimote.sdk.BeaconManager.MonitoringListener;
@@ -59,11 +60,17 @@ public class NotifyDemoActivity extends Activity {
     beaconManager.setMonitoringListener(new MonitoringListener() {
       @Override
       public void onEnteredRegion(Region region, List<Beacon> beacons) {
+
+        MainActivity.showNotification(NotifyDemoActivity.this, "ALL","Party");
+
         postNotification("Entered region");
       }
 
       @Override
       public void onExitedRegion(Region region) {
+
+        MainActivity.showNotification(NotifyDemoActivity.this, "ALL","OFF");
+
         postNotification("Exited region");
       }
     });
@@ -116,6 +123,7 @@ public class NotifyDemoActivity extends Activity {
         .setContentText(msg)
         .setAutoCancel(true)
         .setContentIntent(pendingIntent)
+        
         .build();
     notification.defaults |= Notification.DEFAULT_SOUND;
     notification.defaults |= Notification.DEFAULT_LIGHTS;

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="io.lampshade.now" >
 
     <!-- Needed permissions in order to scan for beacons. -->
@@ -9,6 +10,8 @@
     <!-- Declaration that this app is usable on phones with Bluetooth Low Energy. -->
     <uses-feature android:name="android.hardware.bluetooth_le" android:required="true"/>
 
+    <uses-sdk
+        tools:node="replace" />
 
     <application
         android:allowBackup="true"

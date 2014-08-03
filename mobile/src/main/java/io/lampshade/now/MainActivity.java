@@ -6,6 +6,7 @@ import android.app.Activity;
 import android.app.Notification;
 import android.app.PendingIntent;
 import android.content.ComponentName;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.NotificationCompat;
@@ -15,7 +16,7 @@ import android.view.MenuItem;
 
 public class MainActivity extends Activity {
 
-  public void showNotification(String group, String mood) {
+  public static void showNotification(Context c, String group, String mood) {
     final Intent actionIntent = new Intent("com.twofortyfouram.locale.intent.action.FIRE_SETTING");
     actionIntent.setComponent(new ComponentName("com.kuxhausen.huemore",
                                                 "com.kuxhausen.huemore.automation.FireReceiver"));
@@ -30,14 +31,14 @@ public class MainActivity extends Activity {
     actionIntent.putExtra("com.twofortyfouram.locale.intent.extra.BUNDLE", bundle);
 
     PendingIntent actionPendingIntent =
-        PendingIntent.getBroadcast(this, 0, actionIntent,
+        PendingIntent.getBroadcast(c, 0, actionIntent,
                                    PendingIntent.FLAG_UPDATE_CURRENT);
 
     NotificationCompat.Action
         a =
         new NotificationCompat.Action(R.drawable.ic_action_play, "action", actionPendingIntent);
 
-    Notification notif = new NotificationCompat.Builder(this)
+    Notification notif = new NotificationCompat.Builder(c)
         .setContentText(group + " \u2190 " + mood)
         .setSmallIcon(R.drawable.ic_launcher_lampshade)
         .setContentIntent(actionPendingIntent)
@@ -50,7 +51,7 @@ public class MainActivity extends Activity {
                     .setContentIcon(R.drawable.ic_action_lampshade))
         .build();
     notif.flags = Notification.DEFAULT_LIGHTS | Notification.FLAG_AUTO_CANCEL;
-    NotificationManagerCompat.from(this).notify(0, notif);
+    NotificationManagerCompat.from(c).notify(0, notif);
   }
 
   @Override
@@ -58,7 +59,7 @@ public class MainActivity extends Activity {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_main);
 
-    this.showNotification("Home", "Party");
+    this.showNotification(this, "Home", "Party");
   }
 
 
