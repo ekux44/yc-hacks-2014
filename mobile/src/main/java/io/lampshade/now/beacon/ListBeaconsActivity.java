@@ -59,6 +59,7 @@ public class ListBeaconsActivity extends Activity {
 
     // Configure BeaconManager.
     beaconManager = new BeaconManager(this);
+    //beaconManager.setBackgroundScanPeriod(1,0);
     beaconManager.setRangingListener(new BeaconManager.RangingListener() {
       @Override
       public void onBeaconsDiscovered(Region region, final List<Beacon> beacons) {
