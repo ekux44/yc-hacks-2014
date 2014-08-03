@@ -1,8 +1,11 @@
 package io.lampshade.now;
 
+import com.google.gson.Gson;
+
 import android.app.Activity;
 import android.app.Notification;
 import android.app.PendingIntent;
+import android.content.ComponentName;
 import android.content.Intent;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
@@ -20,27 +23,41 @@ public class MainActivity extends Activity {
         setContentView(R.layout.activity_main);
 
 
-      Intent actionIntent = new Intent(this, MainActivity.class);
+     // Intent actionIntent = new Intent(this, MainActivity.class);
+
+      final Intent actionIntent = new Intent("com.twofortyfouram.locale.intent.action.FIRE_SETTING");
+      actionIntent.setComponent(new ComponentName("com.kuxhausen.huemore","com.kuxhausen.huemore.automation.FireReceiver"));
+
+      LegacyGMB gmb = new LegacyGMB();
+      gmb.group = "Tent";
+      gmb.mood = "Party";
+      Bundle bundle = new Bundle();
+      Gson gson = new Gson();
+      bundle.putString("com.kuxhausen.huemore.EXTRA_BUNDLE_SERIALIZED_BY_NAME", gson.toJson(gmb));
+
+      actionIntent.putExtra("com.twofortyfouram.locale.intent.extra.BUNDLE",bundle);
+
+      //PendingIntent.getBroadcast(this, 0, )
       PendingIntent actionPendingIntent =
-          PendingIntent.getActivity(this, 0, actionIntent,
-                                    PendingIntent.FLAG_UPDATE_CURRENT);
+          PendingIntent.getBroadcast(this, 0, actionIntent,
+                                     PendingIntent.FLAG_UPDATE_CURRENT);
 
       NotificationCompat.Action a = new NotificationCompat.Action(R.drawable.ic_action_play, "action", actionPendingIntent);
 
-      /*NotificationCompat.BigPictureStyle bigStyle = new NotificationCompat.BigPictureStyle();
-      bigStyle.bigPicture(BitmapFactory.decodeResource(this.getResources(),
-                                                         R.drawable.ic_launcher_lampshade));
-      */
       Notification notif = new NotificationCompat.Builder(this)
           .setContentTitle("New title")
           .setContentText("subject")
           .setSmallIcon(R.drawable.ic_launcher_lampshade)
-      //    .setStyle(bigStyle)
+          .setContentIntent(actionPendingIntent)
+          .setAutoCancel(true)
           .extend(new NotificationCompat.WearableExtender()
                       .addAction(a)
+
+                      .setHintHideIcon(true)
                       .setContentAction(0)
                       .setContentIcon(R.drawable.ic_action_lampshade))
           .build();
+      notif.flags = Notification.DEFAULT_LIGHTS | Notification.FLAG_AUTO_CANCEL;
       NotificationManagerCompat.from(this).notify(0, notif);
     }
 
