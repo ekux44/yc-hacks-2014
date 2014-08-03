@@ -48,20 +48,22 @@ public class NotifyDemoActivity extends Activity {
     setContentView(R.layout.notify_demo);
     getActionBar().setDisplayHomeAsUpEnabled(true);
 
-    Beacon beacon = getIntent().getParcelableExtra(ListBeaconsActivity.EXTRAS_BEACON);
+    final Beacon beacon = getIntent().getParcelableExtra(ListBeaconsActivity.EXTRAS_BEACON);
     region = new Region("regionId", beacon.getProximityUUID(), beacon.getMajor(), beacon.getMinor());
     notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
     beaconManager = new BeaconManager(this);
 
     // Default values are 5s of scanning and 25s of waiting time to save CPU cycles.
     // In order for this demo to be more responsive and immediate we lower down those values.
-    beaconManager.setBackgroundScanPeriod(TimeUnit.SECONDS.toMillis(1), 0);
+    beaconManager.setBackgroundScanPeriod(1, 0);
 
     beaconManager.setMonitoringListener(new MonitoringListener() {
       @Override
       public void onEnteredRegion(Region region, List<Beacon> beacons) {
 
-        MainActivity.showNotification(NotifyDemoActivity.this, "ALL","Party");
+
+
+        //MainActivity.showNotification(NotifyDemoActivity.this, "ALL","Party");
 
         postNotification("Entered region");
       }
@@ -69,7 +71,7 @@ public class NotifyDemoActivity extends Activity {
       @Override
       public void onExitedRegion(Region region) {
 
-        MainActivity.showNotification(NotifyDemoActivity.this, "ALL","OFF");
+        //MainActivity.showNotification(NotifyDemoActivity.this, "ALL","OFF");
 
         postNotification("Exited region");
       }
@@ -123,7 +125,7 @@ public class NotifyDemoActivity extends Activity {
         .setContentText(msg)
         .setAutoCancel(true)
         .setContentIntent(pendingIntent)
-        
+
         .build();
     notification.defaults |= Notification.DEFAULT_SOUND;
     notification.defaults |= Notification.DEFAULT_LIGHTS;

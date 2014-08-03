@@ -13,6 +13,7 @@ import com.estimote.sdk.Utils;
 import java.util.ArrayList;
 import java.util.Collection;
 
+import io.lampshade.now.MainActivity;
 import io.lampshade.now.R;
 
 
@@ -23,12 +24,19 @@ import io.lampshade.now.R;
  */
 public class LeDeviceListAdapter extends BaseAdapter {
 
+  enum CurrentSuggestion{
+    NONE, PURPLE, GREEN, BLUE
+  }
+  CurrentSuggestion suggestion = CurrentSuggestion.NONE;
+  Context mContext;
+
   private ArrayList<Beacon> beacons;
   private LayoutInflater inflater;
 
   public LeDeviceListAdapter(Context context) {
     this.inflater = LayoutInflater.from(context);
     this.beacons = new ArrayList<Beacon>();
+    mContext = context;
   }
 
   public void replaceWith(Collection<Beacon> newBeacons) {
@@ -67,6 +75,44 @@ public class LeDeviceListAdapter extends BaseAdapter {
     holder.minorTextView.setText("Minor: " + beacon.getMinor());
     holder.measuredPowerTextView.setText("MPower: " + beacon.getMeasuredPower());
     holder.rssiTextView.setText("RSSI: " + beacon.getRssi());
+
+
+    if(beacon.getMajor()==21946 && beacon.getMinor()==41785){
+      // green
+
+      if(this.suggestion!=CurrentSuggestion.GREEN){
+        if(Utils.computeProximity(beacon).equals(Utils.Proximity.IMMEDIATE)){
+          MainActivity.showNotification(mContext, "Office", "Party");
+          this.suggestion = CurrentSuggestion.GREEN;
+        }
+
+      }
+
+    } else if(beacon.getMajor()==59136 && beacon.getMinor()==39494){
+      //purple
+
+
+      if(this.suggestion!=CurrentSuggestion.PURPLE){
+        if(Utils.computeProximity(beacon).equals(Utils.Proximity.IMMEDIATE)){
+          MainActivity.showNotification(mContext, "Office", "OFF");
+          this.suggestion = CurrentSuggestion.PURPLE;
+        }
+
+      }
+
+    } else if (beacon.getMajor()==2408 && beacon.getMinor()==60956){
+     // blue
+
+      if(this.suggestion!=CurrentSuggestion.BLUE){
+        if(Utils.computeProximity(beacon).equals(Utils.Proximity.IMMEDIATE)){
+          MainActivity.showNotification(mContext, "Office", "Reading");
+          this.suggestion =  CurrentSuggestion.BLUE;
+        }
+
+      }
+
+    }
+
   }
 
   private View inflateIfRequired(View view, int position, ViewGroup parent) {
