@@ -27,6 +27,13 @@ public class LeDeviceListAdapter extends BaseAdapter {
   enum CurrentSuggestion{
     NONE, PURPLE, GREEN, BLUE
   }
+
+
+  public
+  Utils.Proximity blueP = Utils.Proximity.FAR;
+  Utils.Proximity greenP = Utils.Proximity.FAR;
+  Utils.Proximity purpleP = Utils.Proximity.FAR;
+
   CurrentSuggestion suggestion = CurrentSuggestion.NONE;
   Context mContext;
 
@@ -79,38 +86,23 @@ public class LeDeviceListAdapter extends BaseAdapter {
 
     if(beacon.getMajor()==21946 && beacon.getMinor()==41785){
       // green
-
-      if(this.suggestion!=CurrentSuggestion.GREEN){
-        if(Utils.computeProximity(beacon).equals(Utils.Proximity.IMMEDIATE)){
-          MainActivity.showNotification(mContext, "Office", "Party");
-          this.suggestion = CurrentSuggestion.GREEN;
-        }
-
-      }
-
+      greenP = Utils.computeProximity(beacon);
     } else if(beacon.getMajor()==59136 && beacon.getMinor()==39494){
       //purple
-
-
-      if(this.suggestion!=CurrentSuggestion.PURPLE){
-        if(Utils.computeProximity(beacon).equals(Utils.Proximity.IMMEDIATE)){
-          MainActivity.showNotification(mContext, "Office", "OFF");
-          this.suggestion = CurrentSuggestion.PURPLE;
-        }
-
-      }
-
+      purpleP = Utils.computeProximity(beacon);
     } else if (beacon.getMajor()==2408 && beacon.getMinor()==60956){
      // blue
+      blueP = Utils.computeProximity(beacon);
+    }
 
-      if(this.suggestion!=CurrentSuggestion.BLUE){
-        if(Utils.computeProximity(beacon).equals(Utils.Proximity.IMMEDIATE)){
-          MainActivity.showNotification(mContext, "Office", "Reading");
-          this.suggestion =  CurrentSuggestion.BLUE;
-        }
 
-      }
 
+    if(greenP.equals(Utils.Proximity.IMMEDIATE) && !purpleP.equals(Utils.Proximity.IMMEDIATE)){
+     MainActivity.showNotification(mContext,"Office","Sunrise");
+    } else if (greenP.equals(Utils.Proximity.IMMEDIATE) && purpleP.equals(Utils.Proximity.IMMEDIATE)){
+      MainActivity.showNotification(mContext,"Office","Party");
+    } else {
+      MainActivity.showNotification(mContext,"Office","OFF");
     }
 
   }
