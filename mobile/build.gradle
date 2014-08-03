@@ -2,7 +2,7 @@ apply plugin: 'com.android.application'
 
 android {
     compileSdkVersion 20
-    buildToolsVersion "20.0.0"
+    buildToolsVersion '20.0.0'
 
     defaultConfig {
         applicationId "io.lampshade.now"
@@ -23,4 +23,7 @@ dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
     wearApp project(':wear')
     compile 'com.google.android.gms:play-services-wearable:+'
+    compile 'com.android.support:support-v4:21.0.+'
+    compile 'com.google.code.gson:gson:2.2.4'
+    compile files('libs/estimote-sdk-preview.jar')
 }
